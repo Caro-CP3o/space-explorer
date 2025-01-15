@@ -1,17 +1,18 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    './app/**/*.{jsx,js,tsx}',
+    './components/**/*.{jsx,js,tsx}',
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      // fontFamily: {
+      //   sans: ["var(--font-exo2)", "sans-serif"],
+      //   orbitron: ["var(--font-orbitron)", "sans-serif", ],
+      // },
     },
   },
-  plugins: [],
-};
+  plugins: [
+    // require ('@tailwindcss/typography')
+  ],
+}
