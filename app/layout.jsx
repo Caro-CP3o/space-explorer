@@ -26,7 +26,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${robotoSans.variable} ${spaceMono.variable} antialiased`}>
-      <body className="flex flex-colmin-h-screen bg-indigo-950 text-white min-h-screen">
+      <body className="flex flex-col min-h-screen bg-indigo-950 text-white min-h-screen overflow-hidden">
         <header className="z-50">
           <Navbar />
         </header>

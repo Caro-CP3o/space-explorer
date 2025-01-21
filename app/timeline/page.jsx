@@ -1,7 +1,9 @@
-export default function Timeline() {
-    return (
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="text-white">Beautiful timeline of main space discoveries or events animated with gsap</div>
-      </div>
-    )
+import Timeline from "@/components/Timeline";
+
+export default function TimelinePage() {
+  return (
+    <div className="flex flex-col items-start justify-center min-h-screen overflow-x-auto p-8 relative justify-center w-full min-h-screen ">
+      <Timeline />
+    </div>
+  );
 }
