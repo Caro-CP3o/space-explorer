@@ -173,49 +173,43 @@ export default function Timeline() {
   useEffect(() => {
     const element = timelineRef.current;
 
-    // // Loop through the timeline items and animate images with random movement on scroll
-    // timelineData.forEach((item, index) => {
-    //   const timelineItem = element.children[index];
-    //   const image = timelineItem.querySelector("img");
-
-    //   // Set initial random positions for the images
-    //   const randomX = gsap.utils.random(-100, 100);
-    //   const randomY = gsap.utils.random(-100, 100);
-    //   gsap.set(image, { opacity: 1, x: randomX, y: randomY });
-
-    // });
-
     // Set initial random positions for the images
-    // Array.from(element.children).forEach((timelineItem) => {
-    //   const image = timelineItem.querySelector("img");
-    //   if (image) {
-    //     const randomX = gsap.utils.random(-100, 100);
-    //     const randomY = gsap.utils.random(-100, 100);
-    //     gsap.set(image, { opacity: 1, x: randomX, y: randomY });
-    //   }
-    // });
-
-        // Animate each image individually when it enters the viewport
-        Array.from(element.children).forEach((timelineItem) => {
-          const image = timelineItem.querySelector("img");
-          if (image) {
-            gsap.set(image, { opacity: 0, x: gsap.utils.random(-50, 50), y: gsap.utils.random(-50, 50) });
-    
-            gsap.to(image, {
-              opacity: 1,
-              x: 0,
-              y: 0,
-              duration: 1.5,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: timelineItem,
-                start: "top 80%", // Triggers animation when the image is about to enter viewport
-                end: "top 30%", // Stops when it moves up
-                toggleActions: "play none none reverse", // Plays on enter, reverses on exit
-              },
-            });
-          }
-        });
+    Array.from(element.children).forEach((timelineItem) => {
+      const image = timelineItem.querySelector("img");
+      if (image) {
+        const randomX = gsap.utils.random(-100, 100);
+        const randomY = gsap.utils.random(-100, 100);
+        gsap.set(image, { opacity: 1, x: randomX, y: randomY }); 
+      }
+    });
+    gsap.utils.toArray(".timeline-item img").forEach((img) => {
+      gsap.set(img, { opacity: 1 }); // Ensure visibility
+  
+      // Define movement animation
+      const animation = gsap.to(img, {
+        x: () => gsap.utils.random(-50, 50), // Smaller range for natural motion
+        y: () => gsap.utils.random(-50, 50),
+        duration: 2,
+        // yoyo: true,
+        // repeat: -1,
+        ease: "power1.inOut",
+        // paused: true, // Start paused
+        scrub: true
+        
+        
+      });
+  
+      
+      // ScrollTrigger.create({
+      //   trigger: img,
+      //   start: "top 80%", // When 80% of viewport enters
+      //   end: "bottom 20%", // When 20% of viewport leaves
+      //   onEnter: () => animation.play(), // Start animation when entering
+      //   onLeave: () => animation.pause(), // Pause when leaving
+      //   onEnterBack: () => animation.play(), // Resume when scrolling back up
+      //   onLeaveBack: () => animation.pause(), // Pause when scrolling back out
+      // });
+    });
 
     // Create the horizontal scrolling animation
     const scrollTween = gsap.to(element, {
@@ -230,6 +224,7 @@ export default function Timeline() {
         id: "timelineScroll"
       },
     });
+
     // Create a custom Observer
     Observer.create({
       type: "wheel,touch,pointer,key", // Capture wheel, touch, and pointer events
@@ -238,21 +233,6 @@ export default function Timeline() {
         scrollTween.progress(
           gsap.utils.clamp(0, 1, scrollTween.progress() + progressDelta)
         ); // Update the progress
-      },
-      onStop: () => {
-       
-      },
-      onUp: () => {
-        // Optional: Trigger specific actions for upward motion
-      },
-      onKeyDown: (event) => {
-        let delta = 0.05; // Adjust this value for more or less movement per key press
-    
-        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-          scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() + delta));
-        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-          scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() - delta));
-        }
       },
       preventDefault: false, // Prevent default scroll behavior
     });
