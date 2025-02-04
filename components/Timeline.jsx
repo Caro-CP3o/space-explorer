@@ -186,14 +186,36 @@ export default function Timeline() {
     // });
 
     // Set initial random positions for the images
-    Array.from(element.children).forEach((timelineItem) => {
-      const image = timelineItem.querySelector("img");
-      if (image) {
-        const randomX = gsap.utils.random(-100, 100);
-        const randomY = gsap.utils.random(-100, 100);
-        gsap.set(image, { opacity: 1, x: randomX, y: randomY });
-      }
-    });
+    // Array.from(element.children).forEach((timelineItem) => {
+    //   const image = timelineItem.querySelector("img");
+    //   if (image) {
+    //     const randomX = gsap.utils.random(-100, 100);
+    //     const randomY = gsap.utils.random(-100, 100);
+    //     gsap.set(image, { opacity: 1, x: randomX, y: randomY });
+    //   }
+    // });
+
+        // Animate each image individually when it enters the viewport
+        Array.from(element.children).forEach((timelineItem) => {
+          const image = timelineItem.querySelector("img");
+          if (image) {
+            gsap.set(image, { opacity: 0, x: gsap.utils.random(-50, 50), y: gsap.utils.random(-50, 50) });
+    
+            gsap.to(image, {
+              opacity: 1,
+              x: 0,
+              y: 0,
+              duration: 1.5,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: timelineItem,
+                start: "top 80%", // Triggers animation when the image is about to enter viewport
+                end: "top 30%", // Stops when it moves up
+                toggleActions: "play none none reverse", // Plays on enter, reverses on exit
+              },
+            });
+          }
+        });
 
     // Create the horizontal scrolling animation
     const scrollTween = gsap.to(element, {
@@ -205,36 +227,12 @@ export default function Timeline() {
         end: () => `+=${element.scrollWidth - window.innerWidth + 40}`, // Scroll for the full container width
         scrub: true,
         pin: true,
-        id: "timelineScroll",
-        markers: true, // Enable markers for debugging if needed
+        id: "timelineScroll"
       },
     });
-
-    // Array.from(element.children).forEach((timelineItem) => {
-    //   const image = timelineItem.querySelector('img');
-    //   if (image) {
-    //     const randomX = gsap.utils.random(-100, 100);
-    //     const randomY = gsap.utils.random(-100, 100);
-    
-    //     gsap.to(image, {
-    //       x: randomX,
-    //       y: randomY,
-    //       duration: 3,
-    //       ease: 'power2.inOut',
-    //       scrollTrigger: {
-    //         trigger: timelineItem,
-    //         start: 'left center', // Adjust based on when you want the animation to start
-    //         end: 'right center',  // Adjust based on when you want the animation to end
-    //         toggleActions: 'play pause resume reverse', // Play animation on enter, reverse on leave
-    //         markers: true, // Enable markers for debugging
-    //       },
-    //     });
-    //   }
-    // });
-
     // Create a custom Observer
     Observer.create({
-      type: "wheel,touch,pointer", // Capture wheel, touch, and pointer events
+      type: "wheel,touch,pointer,key", // Capture wheel, touch, and pointer events
       onChange: (self) => {
         const progressDelta = self.deltaY / window.innerHeight; // Calculate progress change
         scrollTween.progress(
@@ -242,35 +240,21 @@ export default function Timeline() {
         ); // Update the progress
       },
       onStop: () => {
-        Array.from(element.children).forEach((timelineItem) => {
-          const image = timelineItem.querySelector('img');
-          if (image) {
-            const randomX = gsap.utils.random(-100, 100);
-            const randomY = gsap.utils.random(-100, 100);
-        
-            gsap.to(image, {
-              x: randomX,
-              y: randomY,
-              duration: 3,
-              ease: 'power2.inOut',
-              scrollTrigger: {
-                trigger: timelineItem,
-                start: 'left center', // Adjust based on when you want the animation to start
-                end: 'right center',  // Adjust based on when you want the animation to end
-                toggleActions: 'play play resume reverse', // Play animation on enter, reverse on leave
-                markers: true, // Enable markers for debugging
-              },
-            });
-          }
-        });
+       
       },
       onUp: () => {
         // Optional: Trigger specific actions for upward motion
       },
-      onDown: () => {
-        // Optional: Trigger specific actions for downward motion
+      onKeyDown: (event) => {
+        let delta = 0.05; // Adjust this value for more or less movement per key press
+    
+        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+          scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() + delta));
+        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+          scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() - delta));
+        }
       },
-      preventDefault: true, // Prevent default scroll behavior
+      preventDefault: false, // Prevent default scroll behavior
     });
 
     // Clean up ScrollTrigger and Observer on unmount
