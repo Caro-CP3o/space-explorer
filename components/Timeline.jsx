@@ -194,28 +194,34 @@ export default function Timeline() {
     //     gsap.set(image, { opacity: 1, x: randomX, y: randomY });
     //   }
     // });
+  // Loop through timeline items and animate images
+  Array.from(element.children).forEach((timelineItem) => {
+    const image = timelineItem.querySelector("img");
+    if (image) {
+      // Set initial random positions
+      const randomX = gsap.utils.random(-100, 100);
+      const randomY = gsap.utils.random(-100, 100);
+      gsap.set(image, { opacity: 1, x: randomX, y: randomY });
 
-        // Animate each image individually when it enters the viewport
-        Array.from(element.children).forEach((timelineItem) => {
-          const image = timelineItem.querySelector("img");
-          if (image) {
-            gsap.set(image, { opacity: 0, x: gsap.utils.random(-50, 50), y: gsap.utils.random(-50, 50) });
-    
-            gsap.to(image, {
-              opacity: 1,
-              x: 0,
-              y: 0,
-              duration: 1.5,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: timelineItem,
-                start: "top 80%", // Triggers animation when the image is about to enter viewport
-                end: "top 30%", // Stops when it moves up
-                toggleActions: "play none none reverse", // Plays on enter, reverses on exit
-              },
-            });
-          }
-        });
+      // Animate the image when it enters the viewport
+      gsap.to(image, {
+        opacity: 1,
+        x: 0,  // Reset to the center (or any desired position)
+        y: 0,
+        duration: 1.5,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: timelineItem,
+          start: "top 80%", // Animation triggers when the item is about to enter the viewport
+          end: "top 30%",   // Animation stops when the item leaves the viewport
+          toggleActions: "play none none reverse", // Play on enter, reverse on leave
+          markers: false, // Disable markers for a clean view
+        },
+      });
+    }
+  });
+
+
 
     // Create the horizontal scrolling animation
     const scrollTween = gsap.to(element, {
@@ -227,7 +233,8 @@ export default function Timeline() {
         end: () => `+=${element.scrollWidth - window.innerWidth + 40}`, // Scroll for the full container width
         scrub: true,
         pin: true,
-        id: "timelineScroll"
+        id: "timelineScroll",
+        markers: false
       },
     });
     // Create a custom Observer
@@ -246,13 +253,13 @@ export default function Timeline() {
         // Optional: Trigger specific actions for upward motion
       },
       onKeyDown: (event) => {
-        let delta = 0.05; // Adjust this value for more or less movement per key press
+        // let delta = 0.05; // Adjust this value for more or less movement per key press
     
-        if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-          scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() + delta));
-        } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-          scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() - delta));
-        }
+        // if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        //   scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() + delta));
+        // } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        //   scrollTween.progress(gsap.utils.clamp(0, 1, scrollTween.progress() - delta));
+        // }
       },
       preventDefault: false, // Prevent default scroll behavior
     });
