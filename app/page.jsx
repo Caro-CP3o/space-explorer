@@ -70,7 +70,7 @@ export default function Home() {
     <div className="bg-home flex flex-col items-center justify-center w-full">
       {showCongrats && name && role ? (
         <div className="quiz-result flex items-center justify-center">
-          <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-grey-500 shadow-xl">
+          <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-indigo-800 shadow-xl">
             <h2 className="text-2xl font-bold">Congratulations, {name}!</h2>
             <p className="text-lg">
               Your role is: {roleTitles[role] || roleTitles.default}
@@ -79,13 +79,13 @@ export default function Home() {
         </div>
       ) : showWelcome && name && role ? (
         <div className="lex items-center justify-center px-4 py-2">
-          <div className="absolute top-20 left-4 flex bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-grey-500 shadow-xl">
+          <div className="absolute top-20 left-4 flex bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-indigo-800 shadow-xl">
             <h1 className="text-sm font-bold">
               Welcome on board, {roleTitles[role] || roleTitles.default} {name}!
             </h1>
             <span> {getBadge(role)}</span>
           </div>
-          <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-10 py-10 border border-grey-500 shadow-xl mt-10">
+          <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-10 py-10 border border-indigo-800 shadow-xl mt-10">
             {randomFact && (
               <div className="space-fact">
                 <h3 className="text-xl font-bold">Random Space Fact:</h3>

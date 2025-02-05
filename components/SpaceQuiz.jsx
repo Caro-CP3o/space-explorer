@@ -74,7 +74,7 @@ const SpaceQuiz = ({ onSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-quiz bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-grey-500 shadow-xl text-lg"
+      className="space-quiz bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-indigo-800 shadow-xl text-lg"
     >
       <div className="quiz-intro flex flex-col items-center justify-center px-3 py-3">
         <h2 className="uppercase font-bold">Welcome Space Explorer!</h2>

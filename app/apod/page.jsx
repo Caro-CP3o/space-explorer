@@ -85,7 +85,7 @@ const Apod = () => {
           );
         })}
       </div>
-      <div className="w-full max-w-sm lg:max-w-full lg:flex bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3 border border-grey-500 shadow-xl">
+      <div className="w-full max-w-sm lg:max-w-full lg:flex bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3 border border-indigo-800 shadow-xl">
         {/* Media Section */}
         <div className="h-48 lg:h-auto lg:w-80 flex-none rounded-t lg:rounded-t-none lg:rounded-l overflow-hidden">
           {apodData.media_type === "image" ? (
