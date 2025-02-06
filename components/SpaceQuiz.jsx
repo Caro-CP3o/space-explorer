@@ -43,6 +43,7 @@ const SpaceQuiz = ({ onSubmit }) => {
     },
   ];
 
+  // on stocke les choix du formulaire
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -51,7 +52,7 @@ const SpaceQuiz = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Aggregate roles from answers
+    // on extrait les roles des choix du formulaire et on calcule le + fréquent
     const roles = Object.values(formData);
     const mostCommonRole = roles.reduce(
       (acc, role) => {
@@ -65,12 +66,14 @@ const SpaceQuiz = ({ onSubmit }) => {
       { mostFrequent: "", maxCount: 0 }
     ).mostFrequent;
 
+    // on store le nom et le role de l'utilisateur
     localStorage.setItem("spaceName", name);
     localStorage.setItem("spaceRole", mostCommonRole);
 
     onSubmit(name, mostCommonRole);
   };
 
+  //formulaire on loop sur quizData pour aficher toutes les questions - bouton envoi désactiver si form par rempli
   return (
     <form
       onSubmit={handleSubmit}
@@ -91,7 +94,9 @@ const SpaceQuiz = ({ onSubmit }) => {
       </div>
       {quizData.map((quiz, index) => (
         <div key={index} className="quiz-question">
-          <h3 className="px-3 py-2 uppercase font-bold bg-purple-900 bg-opacity-50 rounded w-fit">{quiz.question}</h3>
+          <h3 className="px-3 py-2 uppercase font-bold bg-purple-900 bg-opacity-50 rounded w-fit">
+            {quiz.question}
+          </h3>
           {quiz.answers.map((answer) => (
             <label key={answer.role} className="quiz-option px-3 py-2">
               <input
