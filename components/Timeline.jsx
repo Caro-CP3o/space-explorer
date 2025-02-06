@@ -230,9 +230,22 @@ const timelineData = [
 export default function Timeline() {
   const timelineRef = useRef();
   const [animationTriggered, setAnimationTriggered] = useState(false);
+  
+  const [isLargeScreen, setIsLargeScreen] = useState(
+    typeof window !== "undefined" && window.innerHeight > 705
+  );
+
 
   useEffect(() => {
     const element = timelineRef.current;
+
+    const handleResize = () => {
+      setIsLargeScreen(window.innerHeight > 705);
+    };
+
+    // Add resize event listener
+    window.addEventListener("resize", handleResize);
+
 
     // Si animation not triggered set random positions pour les images
     if (!animationTriggered) {
@@ -247,28 +260,55 @@ export default function Timeline() {
       setAnimationTriggered(true);
     }
 
-    // horizontal scrolling
-    const scrollTween = gsap.to(element, {
-      x: () => -(element.scrollWidth - window.innerWidth + 80), // horizontal + marges paddings
-      ease: "none",
-      scrollTrigger: {
-        trigger: element,
-        start: "top top",
-        end: () => `+=${element.scrollWidth - window.innerWidth + 80}`,
-        scrub: true,
-        pin: true,
-        id: "timelineScroll",
-      },
-    });
+    // // horizontal scrolling
+    // if (isLargeScreen) {
+    //   const scrollTween = gsap.to(element, {
+    //     x: () => -(element.scrollWidth - window.innerWidth + 80), // horizontal + marges paddings
+    //     ease: "none",
+    //     scrollTrigger: {
+    //       trigger: element,
+    //       start: "top top",
+    //       end: () => `+=${element.scrollWidth - window.innerWidth + 80}`,
+    //       scrub: true,
+    //       pin: true,
+    //       id: "timelineScroll",
+    //     },
+    //   });
+    // }
+     // horizontal scrolling only if viewport height > 705px
+     if (isLargeScreen) {
+      const scrollTween = gsap.to(element, {
+        x: () => -(element.scrollWidth - window.innerWidth + 80), // horizontal + marges paddings
+        ease: "none",
+        scrollTrigger: {
+          trigger: element,
+          start: "top top",
+          end: () => `+=${element.scrollWidth - window.innerWidth + 80}`,
+          scrub: true,
+          pin: true,
+          id: "timelineScroll",
+        },
+      });
+
+      Observer.create({
+        type: "wheel,touch,pointer,key", //capture les events
+        onChange: (self) => {
+          const progressDelta = self.deltaY / window.innerHeight;
+          scrollTween.progress(
+            gsap.utils.clamp(0, 1, scrollTween.progress() + progressDelta)
+          );
+        },
+      });
+    }
 
     Observer.create({
       type: "wheel,touch,pointer,key", //capture les events
-      onChange: (self) => {
-        const progressDelta = self.deltaY / window.innerHeight;
-        scrollTween.progress(
-          gsap.utils.clamp(0, 1, scrollTween.progress() + progressDelta)
-        ); // Update progression
-      },
+      // onChange: (self) => {
+      //   const progressDelta = self.deltaY / window.innerHeight;
+      //   scrollTween.progress(
+      //     gsap.utils.clamp(0, 1, scrollTween.progress() + progressDelta)
+      //   ); // Update progression
+      // },
       onStop: (self) => {
         if (animationTriggered) {
           Array.from(element.children).forEach((timelineItem, index) => {
@@ -298,8 +338,9 @@ export default function Timeline() {
     return () => {
       ScrollTrigger.getById("timelineScroll")?.kill();
       Observer.getAll().forEach((obs) => obs.kill());
+      window.removeEventListener("resize", handleResize);
     };
-  }, [animationTriggered]);
+  }, [animationTriggered, isLargeScreen]);
 
   return (
     <div className="timeline-container relative flex flex-1 items-center justify-center">
@@ -307,7 +348,7 @@ export default function Timeline() {
         {timelineData.map((item, index) => (
           <div
             key={index}
-            className="timeline-item bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3 border border-indigo-800 shadow-xl flex flex-col items-center justify-between text-center w-fit"
+            className="timeline-item bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3 border border-indigo-800 shadow-xl flex flex-col items-center justify-between text-center w-fit min-w-[400px] "
           >
             <h3 className="date text-xl font-bold text-indigo-600 mb-2 z-30 bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3">
               {item.date}
@@ -315,9 +356,9 @@ export default function Timeline() {
             <img
               src={item.image}
               alt={item.event}
-              className="max-w-[300px] h-auto mb-4"
+              className="max-w-[200px] h-auto mb-4"
             />
-            <div className="z-30 min-w-[400px] text-lg z-30 bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3">
+            <div className="text z-30 text-lg z-30 bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm px-3 py-3">
               <h2 className="">{item.title}</h2>
               <p
                 className="event"

@@ -43,4 +43,35 @@ h1,h2,h3,h4{
 h2{
   font-weight: 700;
 }
+@media all and (max-width:464px){
+  .timeline{
+    padding: 0;
+    overflow-x: hidden;
+  }
+  .timeline-item{
+    min-width: 200px;
+  }
+}
+@media all and (max-height:705px) {
+  body{
+    overflow-x: auto;
+    overflow: visible;
+    min-height: 100vh;
+  }
+  .timeline{
+    flex-direction: column;
+    overflow-x: auto;
+    overflow: auto;
+    min-height: max-content;
+    flex: 1;
+    /* padding: 0; */
+  }
+  .timeline-container {
+    width: 100%;
+    overflow-x: visible; /* Ensure horizontal scrolling */
+    display: flex; /* Use flexbox or other layout methods to arrange child elements horizontally */
+    min-height: 100vh;
+    flex: 1;
+  }
+}
 
