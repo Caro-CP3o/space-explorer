@@ -32,10 +32,10 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerHeight > 705) {
-        setIsOverflowHidden(true);
-      } else {
+      if (window.innerHeight <= 705 || window.innerWidth <= 820) {
         setIsOverflowHidden(false);
+      } else {
+        setIsOverflowHidden(true);
       }
     };
 
@@ -55,11 +55,11 @@ export default function RootLayout({ children }) {
         <title>{metadata.title.default}</title>
         <meta name="description" content={metadata.description} />
       </Head>
-      <body className={`flex flex-col min-h-screen bg-indigo-950 text-white min-h-screen ${isOverflowHidden ? 'overflow-hidden' : ''}`}>
+      <body className={`flex flex-col bg-indigo-950 text-white min-h-screen ${isOverflowHidden ? 'overflow-hidden' : 'overflow-auto'}`}>
         <header className="z-50">
           <Navbar />
         </header>
-        <main className="flex items-center justify-center grow w-full mx-auto">
+        <main className="flex items-center justify-center grow w-full mx-auto min-h-full">
           <PageTransition>{children}</PageTransition>
         </main>
         <footer className="z-50 fixed w-full bg-indigo-900 text-center text-xs px-3 py-3 bottom-0">
