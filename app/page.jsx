@@ -78,9 +78,9 @@ export default function Home() {
           </div>
         </div>
       ) : showWelcome && name && role ? (
-        <div className="lex items-center justify-center px-4 py-2">
-          <div className="absolute top-20 left-4 flex bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-indigo-800 shadow-xl">
-            <h1 className="text-sm font-bold">
+        <div className="flex flex-col items-center justify-center px-4 py-2">
+          <div className="welcome absolute top-20 left-4 flex bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-indigo-800 shadow-xl">
+            <h1 className="text-ml font-bold">
               Welcome on board, {roleTitles[role] || roleTitles.default} {name}!
             </h1>
             <span> {getBadge(role)}</span>
@@ -92,7 +92,7 @@ export default function Home() {
                 <h2 className="text-2xl font-semibold">
                   {randomFact.statement}
                 </h2>
-                <p>{randomFact.explanation}</p>
+                <p className="text-lg pt-3">{randomFact.explanation}</p>
               </div>
             )}
           </div>

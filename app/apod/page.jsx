@@ -66,7 +66,7 @@ const Apod = () => {
   };
 
   return (
-    <div className="relative flex items-center justify-center w-full min-h-screen px-20 py-20">
+    <div className="apod-page relative flex items-center justify-center w-full min-h-screen px-20 py-20">
       <div className="absolute inset-0 pointer-events-none">
         {Array.from({ length: 9 }).map((_, index) => {
           return (

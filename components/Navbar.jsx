@@ -5,20 +5,13 @@ import { usePathname } from 'next/navigation';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-// const nav = [
-//   { name: "Home", href: "/", current: true },
-//   { name: "Apod", href: "/apod", current: false },
-//   { name: "Rovers", href: "/rovers", current: false },
-//   { name: "Timeline", href: "/timeline", current: false },
-//   { name: "About", href: "/about", current: false },
-// ];
-
 const nav = [
   { name: "Home", href: "/" },
   { name: "Apod", href: "/apod" },
   { name: "Rovers", href: "/rovers" },
   { name: "Timeline", href: "/timeline" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 function classNames(...classes) {
