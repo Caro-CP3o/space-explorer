@@ -1,16 +1,24 @@
 'use client'
 
 import Link from 'next/link'
-
+import { usePathname } from 'next/navigation';
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+// const nav = [
+//   { name: "Home", href: "/", current: true },
+//   { name: "Apod", href: "/apod", current: false },
+//   { name: "Rovers", href: "/rovers", current: false },
+//   { name: "Timeline", href: "/timeline", current: false },
+//   { name: "About", href: "/about", current: false },
+// ];
+
 const nav = [
-  { name: "Home", href: "/", current: true },
-  { name: "Apod", href: "/apod", current: false },
-  { name: "Rovers", href: "/rovers", current: false },
-  { name: "Timeline", href: "/timeline", current: false },
-  { name: "About", href: "/about", current: false },
+  { name: "Home", href: "/" },
+  { name: "Apod", href: "/apod" },
+  { name: "Rovers", href: "/rovers" },
+  { name: "Timeline", href: "/timeline" },
+  { name: "About", href: "/about" },
 ];
 
 function classNames(...classes) {
@@ -18,6 +26,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const pathname = usePathname(); // Get current route
   return (
     <Disclosure as ="nav" className="bg-gradient-to-r from-indigo-950 to-fuchsia-800 text-zinc-50 uppercase fixed w-full">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -45,12 +54,12 @@ export default function Navbar() {
                                     key={item.name}
                                     href={item.href}
                                     className={classNames(
-                                    item.current
+                                      pathname === item.href
                                         ? "text-indigo-500"
                                         : "text-white hover:bg-purple-900 hover:text-white",
-                                    "rounded-md px-3 py-2 text-sm"
+                                      "rounded-md px-3 py-2 text-sm"
                                     )}
-                                    aria-current={item.current ? "page" : undefined}
+                                    aria-current={pathname === item.href ? "page" : undefined}
                                 >
                                     {item.name}
                                 </Link>
