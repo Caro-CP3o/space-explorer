@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
         <header className="z-50">
           <Navbar />
         </header>
-        <main className="flex items-center justify-center grow w-full mx-auto min-h-full">
+        <main className="flex-1 flex flex-grow items-center justify-center w-full mx-auto overflow-x-hidden">
           <PageTransition>{children}</PageTransition>
         </main>
         <footer className="z-50 fixed w-full bg-indigo-900 text-center text-xs px-3 py-3 bottom-0">

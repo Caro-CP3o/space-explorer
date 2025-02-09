@@ -1,7 +1,7 @@
 export default function About() {
   return (
-    <div className="backgd-image bg-about flex flex-col items-center justify-center w-full h-screen items-stretch">
-      <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-indigo-800 shadow-xl py-10 px-5 mx-5">
+    <div className="backgd-image bg-about bg-cover bg-center flex flex-col items-center justify-center w-full min-h-screen flex-grow relative items-stretch">
+      <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-indigo-800 shadow-xl py-10 px-5 mt-5">
         <h1 className="text-white py-10 text-xl font-bold text-center">
           About Space-Explorer
         </h1>

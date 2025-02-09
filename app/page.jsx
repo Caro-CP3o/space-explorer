@@ -67,7 +67,7 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-home flex flex-col items-center justify-center w-full">
+    <div className="bg-home flex flex-col items-center justify-center w-full h-full relative flex-grow bg-cover bg-center">
       {showCongrats && name && role ? (
         <div className="quiz-result flex items-center justify-center">
           <div className="bg-white-300 rounded-xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 px-3 py-3 border border-indigo-800 shadow-xl">
