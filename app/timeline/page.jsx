@@ -30,7 +30,7 @@ export default function TimelinePage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-start justify-center min-h-screen relative w-full py-6 ">
+    <div className="flex flex-col items-start justify-center min-h-screen relative w-full py-10 px-2">
       <Timeline />
 
       {/* Flèche de défilement */}

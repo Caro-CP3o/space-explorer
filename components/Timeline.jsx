@@ -323,7 +323,7 @@ export default function Timeline() {
 
   return (
     <div className="timeline-container relative flex flex-1 items-center justify-center overflow-x-hidden">
-      <div ref={timelineRef} className="timeline flex gap-8 px-20">
+      <div ref={timelineRef} className="timeline flex gap-8">
         {timelineData.map((item, index) => (
           <div
             key={index}
