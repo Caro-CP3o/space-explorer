@@ -3,11 +3,14 @@
 import { useState, useEffect } from "react";
 
 export function Rovers() {
+  // State pour stocker les images
   const [roverImages, setRoverImages] = useState([]);
+  // State pour stocker les erreurs
   const [error, setError] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0); // State to track the current active image
+  // State pour suivre l'index de l'image active
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Fetch rover images from the NASA API
+  // Fetch rover images de NASA API
   useEffect(() => {
     const fetchRoverImages = async () => {
       try {
@@ -20,10 +23,11 @@ export function Rovers() {
         }
 
         const data = await response.json();
-        
-        // Limit to the most recent 12 images
-        const recentImages = data.photos.slice(0, 12);
-        setRoverImages(recentImages); // Store the fetched images
+
+        // Limite aux 24 images les plus récentes
+        const recentImages = data.photos.slice(0, 24);
+        // Stocke les images
+        setRoverImages(recentImages);
       } catch (err) {
         setError(err.message);
       }
@@ -32,31 +36,45 @@ export function Rovers() {
     fetchRoverImages();
   }, []);
 
+  // Fonction pour aller à l'image précédante
   const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex === 0 ? roverImages.length - 1 : prevIndex - 1));
+    setActiveIndex((prevIndex) =>
+      prevIndex === 0 ? roverImages.length - 1 : prevIndex - 1
+    );
   };
 
+  // Fonction pour aller à l'image suivante
   const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex === roverImages.length - 1 ? 0 : prevIndex + 1));
+    setActiveIndex((prevIndex) =>
+      prevIndex === roverImages.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
+  // Affichage d'un message d'erreur si une erreur survient lors du chargement des images
   if (error) {
     return <div className="text-red-500">Error: {error}</div>;
   }
 
+  // Affichage d'un message de chargement tant que les images ne sont pas disponibles
   if (roverImages.length === 0) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div id="controls-carousel" className="relative w-full" data-carousel="static">
+    <div
+      id="controls-carousel"
+      className="relative w-full"
+      data-carousel="static"
+    >
       {/* Carousel wrapper */}
       <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
         {roverImages.map((image, index) => (
           <div
             key={index}
-            className={`duration-700 ease-in-out ${index === activeIndex ? 'block' : 'hidden'}`}
-            data-carousel-item={index === activeIndex ? 'active' : ''}
+            className={`duration-700 ease-in-out ${
+              index === activeIndex ? "block" : "hidden"
+            }`}
+            data-carousel-item={index === activeIndex ? "active" : ""}
           >
             <img
               src={image.img_src}
@@ -67,7 +85,7 @@ export function Rovers() {
         ))}
       </div>
 
-      {/* Slider controls */}
+      {/* Slider controls - boutons previous/next */}
       <button
         type="button"
         className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"

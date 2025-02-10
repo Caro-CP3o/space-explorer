@@ -228,26 +228,27 @@ const timelineData = [
 ];
 
 export default function Timeline() {
-  const timelineRef = useRef();
+  const timelineRef = useRef(); // Référence pour l'élément de la frise (section)
+  // State pour contrôler si l'animation a été déclenchée
   const [animationTriggered, setAnimationTriggered] = useState(false);
-  
+  // State pour vérifier si l'écran est suffisamment grand pour le défilement horizontal
   const [isLargeScreen, setIsLargeScreen] = useState(
     typeof window !== "undefined" && window.innerHeight > 705
   );
 
-
+  // Gère les changements de taille de l'écran et la première animation de la frise
   useEffect(() => {
     const element = timelineRef.current;
 
+    // Fonction pour ajuster l'état en fonction de la hauteur de l'écran
     const handleResize = () => {
       setIsLargeScreen(window.innerHeight > 705);
     };
 
-    // Add resize event listener
+    // Ajout d'un écouteur d'événements pour la redimensionnement de la fenêtre
     window.addEventListener("resize", handleResize);
 
-
-    // Si animation not triggered set random positions pour les images
+    // Si l'animation n'a pas encore été déclenchée, positionner les images de manière aléatoire
     if (!animationTriggered) {
       Array.from(element.children).forEach((timelineItem, index) => {
         const image = timelineItem.querySelector("img");
@@ -259,24 +260,8 @@ export default function Timeline() {
       });
       setAnimationTriggered(true);
     }
-
-    // // horizontal scrolling
-    // if (isLargeScreen) {
-    //   const scrollTween = gsap.to(element, {
-    //     x: () => -(element.scrollWidth - window.innerWidth + 80), // horizontal + marges paddings
-    //     ease: "none",
-    //     scrollTrigger: {
-    //       trigger: element,
-    //       start: "top top",
-    //       end: () => `+=${element.scrollWidth - window.innerWidth + 80}`,
-    //       scrub: true,
-    //       pin: true,
-    //       id: "timelineScroll",
-    //     },
-    //   });
-    // }
-     // horizontal scrolling only if viewport height > 705px
-     if (isLargeScreen) {
+    // Si la taille de l'écran est suffisamment grande, activer le défilement horizontal
+    if (isLargeScreen) {
       const scrollTween = gsap.to(element, {
         x: () => -(element.scrollWidth - window.innerWidth + 80), // horizontal + marges paddings
         ease: "none",
@@ -303,12 +288,6 @@ export default function Timeline() {
 
     Observer.create({
       type: "wheel,touch,pointer,key", //capture les events
-      // onChange: (self) => {
-      //   const progressDelta = self.deltaY / window.innerHeight;
-      //   scrollTween.progress(
-      //     gsap.utils.clamp(0, 1, scrollTween.progress() + progressDelta)
-      //   ); // Update progression
-      // },
       onStop: (self) => {
         if (animationTriggered) {
           Array.from(element.children).forEach((timelineItem, index) => {
@@ -340,10 +319,10 @@ export default function Timeline() {
       Observer.getAll().forEach((obs) => obs.kill());
       window.removeEventListener("resize", handleResize);
     };
-  }, [animationTriggered, isLargeScreen]);
+  }, [animationTriggered, isLargeScreen]); // Redémarre l'effet lorsque l'écran est redimensionné ou lorsque l'animation a été déclenchée
 
   return (
-    <div className="timeline-container relative flex flex-1 items-center justify-center">
+    <div className="timeline-container relative flex flex-1 items-center justify-center overflow-x-hidden">
       <div ref={timelineRef} className="timeline flex gap-8 px-20">
         {timelineData.map((item, index) => (
           <div

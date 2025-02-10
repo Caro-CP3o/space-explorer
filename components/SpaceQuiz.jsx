@@ -1,9 +1,12 @@
 import { useState } from "react";
 
 const SpaceQuiz = ({ onSubmit }) => {
+  // State pour stocker le user name
   const [name, setName] = useState("");
+  // State pour stocker les réponses sélectionnées dans le quiz
   const [formData, setFormData] = useState({});
 
+  // Données du quiz avec questions et réponses associées à un rôle spécifique
   const quizData = [
     {
       question: "What's your favorite activity?",
@@ -43,12 +46,13 @@ const SpaceQuiz = ({ onSubmit }) => {
     },
   ];
 
-  // on stocke les choix du formulaire
+  // Fonction pour gérer les changements dans les réponses du formulaire
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Fonction exécutée lors de la soumission du formulaire
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -66,14 +70,15 @@ const SpaceQuiz = ({ onSubmit }) => {
       { mostFrequent: "", maxCount: 0 }
     ).mostFrequent;
 
-    // on store le nom et le role de l'utilisateur
+    // Stockage du nom et du rôle déterminé dans le localStorage
     localStorage.setItem("spaceName", name);
     localStorage.setItem("spaceRole", mostCommonRole);
 
+    // Appel de la fonction onSubmit avec les informations de l'utilisateur
     onSubmit(name, mostCommonRole);
   };
 
-  //formulaire on loop sur quizData pour aficher toutes les questions - bouton envoi désactiver si form par rempli
+  // Affichage du formulaire avec boucle sur quizData pour générer les questions dynamiquement - bouton envoi désactivé si form par rempli
   return (
     <form
       onSubmit={handleSubmit}
